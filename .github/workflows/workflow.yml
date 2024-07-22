@@ -53,3 +53,21 @@ jobs:
           coverage: none
       - name: Install Dependencies
         run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+
+  analyze:
+    name: Analyze 🔎
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_mysql
+          coverage: none
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+      - name: Run PHP Insights
+        run: php vendor/bin/phpinsights --no-interaction --min-quality=90 --min-complexity=90 --min-architecture=90 --min-style=90 --ansi --format=github-action
+      - name: Run PHP CS Fixer
+        run: vendor/bin/php-cs-fixer fix --dry-run
