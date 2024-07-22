@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class EmployeeControllerTest extends WebTestCase
 {
-    public function testSomething(): void
+    public function testCreateEmployee(): void
     {
         $client = static::createClient();
 
