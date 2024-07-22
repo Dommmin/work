@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Repository\EmployeeRepository;
@@ -13,15 +15,14 @@ class EmployeeService
         private EntityManagerInterface $entityManager,
         private EmployeeRepository $employeeRepository,
         private ValidatorInterface $validator,
-    ) {}
+    ) {
+    }
 
     public function createEmployee(Request $request): array
     {
         $data = json_decode($request->getContent(), true);
         $employee = $this->employeeRepository->create($data);
-
         $violations = $this->validator->validate($employee);
-
         if (count($violations) > 0) {
             return $this->getValidationErrors($violations);
         }

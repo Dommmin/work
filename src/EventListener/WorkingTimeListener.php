@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\EventListener;
 
 use App\Entity\WorkingTime;
@@ -10,7 +12,6 @@ class WorkingTimeListener
     public function prePersist(LifecycleEventArgs $args): void
     {
         $object = $args->getObject();
-
         if (!$object instanceof WorkingTime) {
             return;
         }
@@ -21,7 +22,6 @@ class WorkingTimeListener
     public function preUpdate(LifecycleEventArgs $args): void
     {
         $object = $args->getObject();
-
         if (!$object instanceof WorkingTime) {
             return;
         }
