@@ -71,3 +71,5 @@ jobs:
         run: php vendor/bin/phpinsights --no-interaction --min-quality=90 --min-complexity=90 --min-architecture=90 --min-style=90 --ansi --format=github-action
       - name: Run PHP CS Fixer
         run: vendor/bin/php-cs-fixer fix --dry-run
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse src tests --memory-limit=1G
