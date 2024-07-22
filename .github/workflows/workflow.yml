@@ -1,4 +1,5 @@
 name: Build and Test
+
 on:
   push:
     branches:
@@ -13,7 +14,9 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: test_db
+          MYSQL_DATABASE: app_test
+          MYSQL_USER: app
+          MYSQL_PASSWORD: app_password
         ports:
           - 3306:3306
         options: >-
@@ -21,36 +24,52 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 3
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           extensions: mbstring, pdo_mysql
           coverage: none
+
       - name: Install Dependencies
         run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+
       - name: Wait for MySQL
-        run: sleep 15
-      - name: Create Database
         run: |
-          php bin/console doctrine:database:create --if-not-exists
-          php bin/console doctrine:schema:update --force
+          for i in {1..30}; do
+            if mysqladmin ping -h 127.0.0.1 -P 3306 --silent; then
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 1
+          done
+
+      - name: Create Database and Run Migrations
+        run: |
+          php bin/console doctrine:database:create --if-not-exists --env=test
+          php bin/console doctrine:schema:update --force --env=test
+          php bin/console doctrine:migrations:migrate --no-interaction --env=test
+
       - name: Run Tests
-        run: php bin/phpunit
+        run: php bin/phpunit --env=test
 
   build:
     name: Build ⛏
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           extensions: mbstring, pdo_mysql
           coverage: none
+
       - name: Install Dependencies
         run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
 
@@ -59,17 +78,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           extensions: mbstring, pdo_mysql
           coverage: none
+
       - name: Install Dependencies
         run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+
       - name: Run PHP Insights
         run: php vendor/bin/phpinsights --no-interaction --min-quality=85 --min-complexity=85 --min-architecture=85 --min-style=85 --ansi --format=github-action
+
       - name: Run PHP CS Fixer
         run: vendor/bin/php-cs-fixer fix --dry-run
+
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse src tests --memory-limit=1G
