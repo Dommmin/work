@@ -1,0 +1,36 @@
+name: Build and deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test 🧪
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_mysql
+          coverage: none
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+      - name: Run tests
+        run: php bin/phpunit
+  build:
+    name: Build ⛏
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_mysql
+          coverage: none
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
