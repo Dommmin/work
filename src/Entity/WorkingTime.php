@@ -1,19 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\WorkingTimeRepository;
-use DateTimeInterface;
+use App\Validator as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: WorkingTimeRepository::class)]
+#[CustomAssert\EndDateAfterStartDate]
+#[CustomAssert\WorkingHours]
+#[CustomAssert\UniqueWorkingTime]
 class WorkingTime
 {
-    CONST int HOURS_PER_DAY = 12;
-    CONST int HOURS_PER_MONTH = 40;
-    CONST int SALARY_PER_HOUR = 20;
-    CONST int PERCENTAGE_SALARY_FOR_OVERTIME = 200 / 100;
+    public const int HOURS_PER_DAY = 12;
+    public const int HOURS_PER_MONTH = 40;
+    public const int SALARY_PER_HOUR = 20;
+    public const int PERCENTAGE_SALARY_FOR_OVERTIME = 200 / 100;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,14 +32,14 @@ class WorkingTime
 
     #[ORM\Column(type: 'datetime')]
     #[Assert\NotNull(message: 'Please enter a start date.')]
-    private ?DateTimeInterface $startDate = null;
+    private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(type: 'datetime')]
     #[Assert\NotNull(message: 'Please enter an end date.')]
-    private ?DateTimeInterface $endDate = null;
+    private ?\DateTimeInterface $endDate = null;
 
     #[ORM\Column(type: 'date')]
-    private ?DateTimeInterface $date = null;
+    private ?\DateTimeInterface $date = null;
 
     public function getId(): ?int
     {
@@ -53,36 +58,36 @@ class WorkingTime
         return $this;
     }
 
-    public function getStartDate(): ?DateTimeInterface
+    public function getStartDate(): ?\DateTimeInterface
     {
         return $this->startDate;
     }
 
-    public function setStartDate(?DateTimeInterface $startDate): static
+    public function setStartDate(?\DateTimeInterface $startDate): static
     {
         $this->startDate = $startDate;
 
         return $this;
     }
 
-    public function getEndDate(): ?DateTimeInterface
+    public function getEndDate(): ?\DateTimeInterface
     {
         return $this->endDate;
     }
 
-    public function setEndDate(?DateTimeInterface $endDate): static
+    public function setEndDate(?\DateTimeInterface $endDate): static
     {
         $this->endDate = $endDate;
 
         return $this;
     }
 
-    public function getDate(): ?DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(?DateTimeInterface $date): static
+    public function setDate(?\DateTimeInterface $date): static
     {
         $this->date = $date;
 

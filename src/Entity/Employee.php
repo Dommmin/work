@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\EmployeeRepository;
@@ -55,7 +57,7 @@ class Employee
 
     public function getName(): string
     {
-        return $this->firstName . ' ' . $this->lastName;
+        return $this->firstName.' '.$this->lastName;
     }
 
     public function setFirstName(?string $firstName): static
