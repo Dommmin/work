@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Service\WorkingTimeService;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,7 +17,7 @@ class WorkingTimeController extends ApiController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('v1/working-times', name: 'v1.working-time.create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
@@ -27,7 +28,7 @@ class WorkingTimeController extends ApiController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('v1/working-times/day-summary', name: 'v1.working-time-day-summary.get', methods: ['GET'])]
     public function daySummary(Request $request): JsonResponse
@@ -38,7 +39,7 @@ class WorkingTimeController extends ApiController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     #[Route('v1/working-times/month-summary', name: 'v1.working-time-month-summary.get', methods: ['GET'])]
     public function monthSummary(Request $request): JsonResponse
