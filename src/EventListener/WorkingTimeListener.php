@@ -12,7 +12,7 @@ class WorkingTimeListener
     public function prePersist(LifecycleEventArgs $args): void
     {
         $object = $args->getObject();
-        if (!$object instanceof WorkingTime) {
+        if (! $object instanceof WorkingTime) {
             return;
         }
 
@@ -22,7 +22,7 @@ class WorkingTimeListener
     public function preUpdate(LifecycleEventArgs $args): void
     {
         $object = $args->getObject();
-        if (!$object instanceof WorkingTime) {
+        if (! $object instanceof WorkingTime) {
             return;
         }
 

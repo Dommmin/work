@@ -17,7 +17,7 @@ class UniqueWorkingTimeValidator extends ConstraintValidator
 
     public function validate(mixed $value, Constraint $constraint): void
     {
-        if (!$value instanceof WorkingTime) {
+        if (! $value instanceof WorkingTime) {
             return;
         }
 

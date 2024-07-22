@@ -31,7 +31,7 @@ class WorkingTimeService
         $data = json_decode($request->getContent(), true);
         $employee = $this->employeeRepository->findOneBy(['uuid' => $data['employee'] ?? null]);
 
-        if (!$employee) {
+        if (! $employee) {
             return (new ErrorDto(false, ['employee' => 'Employee not found']))->toArray();
         }
 
@@ -66,22 +66,22 @@ class WorkingTimeService
         $queryDate = $request->query->get('date');
         $employeeId = $request->query->get('employee');
 
-        if (!$employeeId) {
+        if (! $employeeId) {
             $errors['employee'] = 'Employee is required';
         }
 
-        if (!$queryDate) {
+        if (! $queryDate) {
             $errors['date'] = 'Date is required';
         } else {
             $date = \DateTime::createFromFormat('Y-m-d', $queryDate);
-            if (!$date) {
+            if (! $date) {
                 $errors['date'] = 'Date is not valid. Format should be YYYY-MM-DD';
             }
         }
 
         $employee = $this->employeeRepository->findOneBy(['uuid' => $employeeId]);
 
-        if (!$employee) {
+        if (! $employee) {
             $errors['employee'] = 'Employee not found';
         }
 
@@ -91,7 +91,7 @@ class WorkingTimeService
 
         $workingTime = $this->workingTimeRepository->getDaySummaryForEmployee($employee, $queryDate);
 
-        if (!$workingTime) {
+        if (! $workingTime) {
             return [
                 'success' => true,
                 'message' => 'No working time found',
@@ -115,22 +115,22 @@ class WorkingTimeService
         $queryDate = $request->query->get('date');
         $employeeId = $request->query->get('employee');
 
-        if (!$employeeId) {
+        if (! $employeeId) {
             $errors['employee'] = 'Employee is required';
         }
 
-        if (!$queryDate) {
+        if (! $queryDate) {
             $errors['date'] = 'Date is required';
         } else {
             $date = \DateTime::createFromFormat('Y-m', $queryDate);
-            if (!$date) {
+            if (! $date) {
                 $errors['date'] = 'Date is not valid. Format should be YYYY-MM';
             }
         }
 
         $employee = $this->employeeRepository->findOneBy(['uuid' => $employeeId]);
 
-        if (!$employee) {
+        if (! $employee) {
             $errors['employee'] = 'Employee not found';
         }
 

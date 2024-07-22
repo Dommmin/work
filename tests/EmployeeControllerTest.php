@@ -12,7 +12,7 @@ class EmployeeControllerTest extends WebTestCase
 
         $jsonData = json_encode([
             'firstName' => 'Dominik',
-            'lastName' => 'Test'
+            'lastName' => 'Test',
         ]);
 
         $headers = [

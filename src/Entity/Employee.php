@@ -94,7 +94,7 @@ class Employee
 
     public function addWorkingTime(WorkingTime $workingTime): static
     {
-        if (!$this->workingTimes->contains($workingTime)) {
+        if (! $this->workingTimes->contains($workingTime)) {
             $this->workingTimes->add($workingTime);
             $workingTime->setEmployee($this);
         }
