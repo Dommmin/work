@@ -40,4 +40,13 @@ class EmployeeRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function create(array $data): Employee
+    {
+        $employee = new Employee();
+        $employee->setFirstName($data['firstName'] ?? null);
+        $employee->setLastName($data['lastName'] ?? null);
+
+        return $employee;
+    }
 }
